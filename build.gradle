@@ -1,0 +1,74 @@
+ext {
+    mainVersion = "0.0.1.RELEASE"
+}
+
+apply plugin: "eclipse"
+apply plugin: "eclipse-wtp"
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "eclipse-wtp"
+
+buildscript {
+    repositories {
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+    }
+}
+
+repositories {
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+eclipse {
+    project {
+        name="hkanalyzer"
+    }
+    classpath {
+         downloadSources=true
+    }
+}
+
+jar {
+    baseName = "hkanalyzer"
+    version = mainVersion
+    manifest {
+        attributes(
+            "Implementation-Version": mainVersion
+        )
+    }
+}
+
+sourceSets {
+    main.java.srcDirs = ["src/main/java"]
+    main.resources.srcDirs = ["src/main/resources"]
+    test.java.srcDirs = ["src/test/java"]
+    test.resources.srcDirs = ["src/test/resources"]
+}
+
+dependencies {
+    compile "org.slf4j:slf4j-api:1.7.12"
+    compile "org.slf4j:jcl-over-slf4j:1.7.12"
+    compile "org.slf4j:log4j-over-slf4j:1.7.12"
+    compile "ch.qos.logback:logback-classic:1.1.7"
+
+    compile "org.apache.lucene:lucene-core:6.3.0"
+    compile "org.apache.lucene:lucene-queryparser:6.3.0"
+
+    testCompile "junit:junit:4.12"
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-parameters"
+    options.encoding = "UTF-8"
+}
+
+task copyDependencies(type: Copy) {
+   from configurations.compile
+   into "dependencies"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "3.1"
+}
