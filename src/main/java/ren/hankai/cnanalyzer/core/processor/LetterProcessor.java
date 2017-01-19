@@ -1,15 +1,17 @@
 
 package ren.hankai.cnanalyzer.core.processor;
 
-import ren.hankai.cnanalyzer.core.SegmentContext;
 import ren.hankai.cnanalyzer.core.Lexeme;
+import ren.hankai.cnanalyzer.core.SegmentContext;
 import ren.hankai.cnanalyzer.util.CharacterUtil;
 
 import java.util.Arrays;
 
 /**
+ * 字母处理器。
+ * 
  * @author hankai
- * @version TODO Missing version number
+ * @version 1.0.0
  * @since Jan 17, 2017 11:29:45 AM
  */
 public class LetterProcessor implements WordProcessor {

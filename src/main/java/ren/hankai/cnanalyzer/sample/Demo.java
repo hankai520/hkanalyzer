@@ -16,7 +16,8 @@ import org.apache.lucene.store.RAMDirectory;
 
 import ren.hankai.cnanalyzer.core.DictionaryTokenizer;
 import ren.hankai.cnanalyzer.lucene.HkAnalyzer;
-import ren.hankai.cnanalyzer.lucene.HkQueryParser;
+import ren.hankai.cnanalyzer.lucene.HkQueryBuilder;
+import ren.hankai.cnanalyzer.lucene.HkSimilarity;
 
 import java.io.StringReader;
 
@@ -51,7 +52,9 @@ public class Demo {
   public static void searchText(String keyword) throws Exception {
     final IndexReader reader = DirectoryReader.open(directory);
     final IndexSearcher searcher = new IndexSearcher(reader);
-    final Query query = HkQueryParser.parse("text", keyword);
+    searcher.setSimilarity(new HkSimilarity());
+    // HkQueryParser.isLongerTextOnly = true; //使用最大且分词
+    final Query query = HkQueryBuilder.build("text", keyword);
     // final Query query = new MatchAllDocsQuery();
     // final Query query = new TermsQuery(new Term("text", keyword));
     final TopDocs topDocs = searcher.search(query, 5);
@@ -63,12 +66,16 @@ public class Demo {
   }
 
   public static void demoIndexAndSearch() throws Exception {
-    indexText("我有一头小毛驴我从来也不骑，有一天我心血来潮骑着它上街");
-    searchText("一头");
+    indexText("唐朝诗人李白曾写过一首诗《望庐山瀑布》，日照香炉生紫烟，遥看瀑布挂前川，飞流直下三千尺，疑是银河落九天");
+    // 使用 queryparser 可以清除间隔符
+    // searchText("小 毛 \n \t 驴");
+    searchText("唐朝银河");
   }
 
   public static void demoTokenizeString() throws Exception {
-    final String text = "aa无此词aa这个词条来自自定义词典";
+    final String text = "唐朝诗人李白曾写过一首诗《望庐山瀑布》，日照香炉生紫烟，遥看瀑布挂前川，飞流直下三千尺，疑是银河落九天";
+    // final String text = "发票的票额是壹万叁仟陆百〇玖公顷";
+    // final String text = "aa无此词aa这个词条来自自定义词典";
     final DictionaryTokenizer tokenizer = new DictionaryTokenizer();
     final StringReader sr = new StringReader(text);
     tokenizer.setReader(sr);

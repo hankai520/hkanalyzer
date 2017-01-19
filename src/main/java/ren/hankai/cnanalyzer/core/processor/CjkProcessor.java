@@ -3,18 +3,19 @@ package ren.hankai.cnanalyzer.core.processor;
 
 import ren.hankai.cnanalyzer.core.Dictionary;
 import ren.hankai.cnanalyzer.core.Hit;
-import ren.hankai.cnanalyzer.core.SegmentContext;
 import ren.hankai.cnanalyzer.core.Lexeme;
+import ren.hankai.cnanalyzer.core.SegmentContext;
 import ren.hankai.cnanalyzer.util.CharacterUtil;
 
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 中文（CJK）词元处理子分词器，涵盖一下范围 1.中文词语 2.姓名 3.地名 4.未知词（单字切分） 5.日文/韩文（单字切分）
+ * CJK (Chinese, Japanese, Korean) 文字处理器。
  *
- * @author 林良益
- * @version 3.2
+ * @author hankai
+ * @version 1.0.0
+ * @since Jan 19, 2017 9:50:43 AM
  */
 public class CjkProcessor implements WordProcessor {
 

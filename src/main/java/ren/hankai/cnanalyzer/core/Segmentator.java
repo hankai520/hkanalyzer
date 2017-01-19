@@ -2,9 +2,9 @@
 package ren.hankai.cnanalyzer.core;
 
 import ren.hankai.cnanalyzer.core.processor.CjkProcessor;
-import ren.hankai.cnanalyzer.core.processor.WordProcessor;
 import ren.hankai.cnanalyzer.core.processor.LetterProcessor;
 import ren.hankai.cnanalyzer.core.processor.QuantifierProcessor;
+import ren.hankai.cnanalyzer.core.processor.WordProcessor;
 import ren.hankai.cnanalyzer.util.CharacterUtil;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * 分词器包装类。
- * 
+ *
  * @author hankai
  * @version 1.0.0
  * @since Jan 14, 2017 2:48:12 PM
@@ -23,12 +23,16 @@ public class Segmentator {
 
   private Reader input;
   private final char[] buffer = new char[1024 * 4]; // 4KB
-  private final SegmentContext context =
-      new SegmentContext(buffer, SegmentAlgorithm.ForwardMaxLength);
+  private final SegmentContext context;
   private final List<WordProcessor> processors = new ArrayList<>();
 
   public Segmentator(Reader input) {
+    this(input, true);
+  }
+
+  public Segmentator(Reader input, boolean matchLongerTextOnly) {
     this.input = input;
+    context = new SegmentContext(buffer, matchLongerTextOnly);
     processors.add(new QuantifierProcessor());
     processors.add(new CjkProcessor());
     processors.add(new LetterProcessor());
@@ -48,7 +52,7 @@ public class Segmentator {
         // 记录累计已分析的字符长度
         context.setBufferOffset(context.getBufferOffset() + analyzedLength);
         // 如果使用最大切分，则过滤交叠的短词元
-        if (context.getAlgorithm() == SegmentAlgorithm.ForwardMaxLength) {
+        if (context.isMatchLongerTextOnly()) {
           context.excludeOverlap();
         }
         // 读取词元池中的词元

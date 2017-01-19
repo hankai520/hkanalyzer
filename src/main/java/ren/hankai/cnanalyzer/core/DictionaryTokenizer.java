@@ -22,9 +22,13 @@ public class DictionaryTokenizer extends Tokenizer {
   private final Segmentator segmentator;
 
   public DictionaryTokenizer() {
+    this(false);
+  }
+
+  public DictionaryTokenizer(boolean matchLongerTextOnly) {
     termAttribute = addAttribute(CharTermAttribute.class);
     offsetAttribute = addAttribute(OffsetAttribute.class);
-    segmentator = new Segmentator(input);
+    segmentator = new Segmentator(input, matchLongerTextOnly);
   }
 
   @Override

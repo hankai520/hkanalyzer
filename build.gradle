@@ -52,7 +52,7 @@ dependencies {
     compile "org.slf4j:jcl-over-slf4j:1.7.12"
     compile "org.slf4j:log4j-over-slf4j:1.7.12"
     compile "ch.qos.logback:logback-classic:1.1.7"
-
+    compile "org.apache.commons:commons-lang3:3.4"
     compile "org.apache.lucene:lucene-core:6.3.0"
     compile "org.apache.lucene:lucene-queryparser:6.3.0"
 

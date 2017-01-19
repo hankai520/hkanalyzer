@@ -16,8 +16,8 @@ import java.util.Set;
  */
 public class SegmentContext {
 
-  // 分词算法
-  private final SegmentAlgorithm algorithm;
+  // 当有多个分词匹配时，优先选择长度最大的分词结果
+  private final boolean matchLongerTextOnly;
   // 记录Reader内已分析的字串总长度（累计长度）
   private int bufferOffset;
   // 最近一次读入的,可处理的字符长度
@@ -33,8 +33,8 @@ public class SegmentContext {
   // 词元结果集，存储每次游标的移动，切分出来的词元
   private SortedLinkSet lexemeLinkSet;
 
-  public SegmentContext(char[] buffer, SegmentAlgorithm algorithm) {
-    this.algorithm = algorithm;
+  public SegmentContext(char[] buffer, boolean matchLongerTextOnly) {
+    this.matchLongerTextOnly = matchLongerTextOnly;
     this.buffer = buffer;
     activeProcessors = new HashSet<>(4);
     lexemeLinkSet = new SortedLinkSet();
@@ -201,12 +201,12 @@ public class SegmentContext {
   }
 
   /**
-   * 获取 algorithm 字段的值。
+   * 获取 matchLongerTextOnly 字段的值。
    *
-   * @return algorithm 字段值
+   * @return matchLongerTextOnly 字段值
    */
-  public SegmentAlgorithm getAlgorithm() {
-    return algorithm;
+  public boolean isMatchLongerTextOnly() {
+    return matchLongerTextOnly;
   }
 
   /**

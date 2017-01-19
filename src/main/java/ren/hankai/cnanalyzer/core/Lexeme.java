@@ -15,20 +15,19 @@ public final class Lexeme implements Comparable<Lexeme> {
   public static final int TYPE_NUMCOUNT = 11; // 量词
   public static final int TYPE_LETTER = 20; // 英文
 
-  // 词元的起始位移
-  private int offset;
-  // 词元的相对起始位置
-  private int begin;
-  // 词元的长度
-  private int length;
-  // 词元文本
-  private String text;
-  // 词元类型
-  private int type;
-  // 当前词元的前一个词元
-  private Lexeme prev;
-  // 当前词元的后一个词元
-  private Lexeme next;
+  /*
+   * 因为在读取并分析完毕 offset 之后的文本，offset才会累加，因此， offset会和begin之间有个差值，即当前正在分析的文本长度。
+   */
+  private int offset; // 词元在全部文本中的起始位移
+  private int begin; // 词元首字符在缓冲区中的位置
+  private int length; // 词元文本的长度
+  private String text; // 词元文本内容
+  private int type; // 词元类型
+  /*
+   * 用于构造树形字典结构。
+   */
+  private Lexeme prev; // 当前词元的前一个词元
+  private Lexeme next; // 当前词元的后一个词元
 
   public Lexeme(int offset, int begin, int length, int type) {
     this.offset = offset;

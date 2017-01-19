@@ -1,5 +1,7 @@
 package ren.hankai.cnanalyzer.core;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,13 +31,13 @@ public class Dictionary {
     quantifiers = loadWords(PATH_DIC_QUANTIFIER, null);
 
     final String[] userDicts = ConfigUtil.getUserDictionaries();
-    if ((userDicts != null) && (userDicts.length > 0)) {
+    if (ArrayUtils.isNotEmpty(userDicts)) {
       for (final String string : userDicts) {
         loadWords(string, mainWords);
       }
     }
     final String[] userStopwords = ConfigUtil.getUserStopwords();
-    if ((userStopwords != null) && (userStopwords.length > 0)) {
+    if (ArrayUtils.isNotEmpty(userStopwords)) {
       for (final String string : userStopwords) {
         loadWords(string, mainWords);
       }
@@ -134,7 +136,32 @@ public class Dictionary {
     return stopWords.match(charArray, begin, length, null).isMatch();
   }
 
-  public static void addWord(String word) {
-
+  /**
+   * 批量添加词条到主字典。
+   *
+   * @param words 词条数组
+   * @author hankai
+   * @since Jan 19, 2017 9:40:37 AM
+   */
+  public static void addWord(String... words) {
+    if (ArrayUtils.isNotEmpty(words)) {
+      for (final String word : words) {
+        addWord(word);
+      }
+    }
   }
+
+  /**
+   * 添加词条到主字典。
+   *
+   * @param word 词条
+   * @author hankai
+   * @since Jan 19, 2017 9:41:00 AM
+   */
+  public static void addWord(String word) {
+    if ((mainWords != null) && StringUtils.isNotEmpty(word)) {
+      mainWords.fillSegment(word.toCharArray());
+    }
+  }
+
 }

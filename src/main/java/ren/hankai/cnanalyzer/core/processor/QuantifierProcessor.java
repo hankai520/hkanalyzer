@@ -3,8 +3,8 @@ package ren.hankai.cnanalyzer.core.processor;
 
 import ren.hankai.cnanalyzer.core.Dictionary;
 import ren.hankai.cnanalyzer.core.Hit;
-import ren.hankai.cnanalyzer.core.SegmentContext;
 import ren.hankai.cnanalyzer.core.Lexeme;
+import ren.hankai.cnanalyzer.core.SegmentContext;
 import ren.hankai.cnanalyzer.util.CharacterUtil;
 
 import java.util.HashSet;
@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * 量词、计数词处理器。
+ * 
  * @author hankai
- * @version TODO Missing version number
+ * @version 1.0.0
  * @since Jan 17, 2017 11:32:05 AM
  */
 public class QuantifierProcessor implements WordProcessor {

@@ -1,5 +1,7 @@
 package ren.hankai.cnanalyzer.util;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,9 +50,9 @@ public class ConfigUtil {
       }
       for (final String string : DICTIONARY_KEYS) {
         final String paths = props.getProperty(string);
-        if (paths != null) {
+        if (StringUtils.isNotEmpty(paths)) {
           final String[] pathArray = paths.trim().split(PATH_SEPARATOR);;
-          if ((pathArray != null) && (pathArray.length > 0)) {
+          if (ArrayUtils.isNotEmpty(pathArray)) {
             dictionaries.put(string, pathArray);
           }
         }

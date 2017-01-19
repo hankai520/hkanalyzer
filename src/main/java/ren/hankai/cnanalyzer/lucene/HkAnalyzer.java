@@ -14,9 +14,18 @@ import ren.hankai.cnanalyzer.core.DictionaryTokenizer;
  */
 public class HkAnalyzer extends Analyzer {
 
+  private final DictionaryTokenizer tokenizer;
+
+  public HkAnalyzer() {
+    this(false);
+  }
+
+  public HkAnalyzer(boolean matchLongerText) {
+    tokenizer = new DictionaryTokenizer(matchLongerText);
+  }
+
   @Override
   protected TokenStreamComponents createComponents(String fieldName) {
-    final DictionaryTokenizer tokenizer = new DictionaryTokenizer();
     return new TokenStreamComponents(tokenizer);
   }
 
