@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import ren.hankai.cnanalyzer.core.Lexeme;
 import ren.hankai.cnanalyzer.core.Segmentator;
-import ren.hankai.cnanalyzer.util.CharacterUtil;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -124,7 +123,6 @@ public class HkQueryBuilder {
     if (StringUtils.isEmpty(query)) {
       return new TermQuery(new Term(field));
     }
-    query = CharacterUtil.removeSpeceCharacters(query);
     QueryBranch root = getTokenBranch(query);
     if (root == null) {
       root = new QueryBranch(null);

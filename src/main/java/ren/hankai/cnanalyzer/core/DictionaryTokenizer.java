@@ -66,4 +66,13 @@ public class DictionaryTokenizer extends Tokenizer {
   public String getStringComponent() {
     return termAttribute.toString();
   }
+
+  /**
+   * 获取 endOffset 字段的值。
+   *
+   * @return endOffset 字段值
+   */
+  public int getEndOffset() {
+    return endOffset;
+  }
 }

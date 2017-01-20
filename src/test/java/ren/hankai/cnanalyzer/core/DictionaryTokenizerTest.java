@@ -4,6 +4,8 @@ package ren.hankai.cnanalyzer.core;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 
 /**
@@ -42,4 +44,25 @@ public class DictionaryTokenizerTest {
     tokenizer.close();
   }
 
+  @Test
+  public void testPerformance() throws Exception {
+    final long start = System.currentTimeMillis();
+    final DictionaryTokenizer tokenizer = new DictionaryTokenizer();
+    final InputStream input = this.getClass().getResourceAsStream("/test.txt");
+    if (input != null) {
+      final InputStreamReader reader = new InputStreamReader(input);
+      tokenizer.setReader(reader);
+      tokenizer.reset();
+      while (tokenizer.incrementToken()) {
+      }
+      tokenizer.close();
+      reader.close();
+      final long end = System.currentTimeMillis();
+      final double timespan = ((double) end - start) / 1000;
+      final int bytes = tokenizer.getEndOffset();
+      final double speed = bytes / 1024 / timespan;
+      System.out.println("Segment Speed: " + speed + " kb/s");
+      Assert.assertTrue(speed >= 45);// >= 45kb/s
+    }
+  }
 }

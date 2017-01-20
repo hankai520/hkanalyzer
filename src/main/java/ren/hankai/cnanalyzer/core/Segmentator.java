@@ -31,7 +31,7 @@ public class Segmentator {
   }
 
   public Segmentator(Reader input, boolean matchLongerTextOnly) {
-    this.input = input;
+    this.input = new SpaceCharacterFilter(input);
     context = new SegmentContext(buffer, matchLongerTextOnly);
     processors.add(new QuantifierProcessor());
     processors.add(new CjkProcessor());
@@ -103,7 +103,6 @@ public class Segmentator {
   private int fillBuffer(Reader reader) throws IOException {
     int readCount = 0;
     if (context.getBufferOffset() == 0) {
-      // 首次读取reader
       readCount = reader.read(buffer);
     } else {
       final int offset = context.getAvailableLength() - context.getLastAnalyzedLength();
@@ -162,7 +161,7 @@ public class Segmentator {
    * @since Jan 17, 2017 10:41:44 AM
    */
   public synchronized void reset(Reader input) {
-    this.input = input;
+    this.input = new SpaceCharacterFilter(input);
     context.reset();
     resetProcessors();
   }
