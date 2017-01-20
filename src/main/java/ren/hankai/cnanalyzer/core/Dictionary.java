@@ -13,6 +13,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
+/**
+ * 词库。
+ * 
+ * @author hankai
+ * @version 1.0.0
+ * @since Jan 20, 2017 2:18:13 PM
+ */
 public class Dictionary {
 
   private static final Logger logger = LoggerFactory.getLogger(Dictionary.class);
