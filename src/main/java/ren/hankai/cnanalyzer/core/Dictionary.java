@@ -53,7 +53,7 @@ public class Dictionary {
    * @author hankai
    * @since Jan 18, 2017 4:43:25 PM
    */
-  private static WordSegment loadWords(String dictionaryPath, WordSegment wordSegment) {
+  public static WordSegment loadWords(String dictionaryPath, WordSegment wordSegment) {
     WordSegment ws = wordSegment;
     if (ws == null) {
       ws = new WordSegment((char) 0);
@@ -108,6 +108,7 @@ public class Dictionary {
    * @return Hit
    */
   public static Hit matchWithHit(char[] charArray, int currentIndex, Hit matchedHit) {
+    Objects.requireNonNull(matchedHit, "Matched hit cannot be null!");
     final WordSegment ds = matchedHit.getMatchedWord();
     return ds.match(charArray, currentIndex, matchedHit);
   }

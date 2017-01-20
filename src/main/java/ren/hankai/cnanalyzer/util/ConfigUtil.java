@@ -58,7 +58,7 @@ public class ConfigUtil {
         }
       }
     } else {
-      logger.error("HkAnalyzer configuration file not found!");
+      logger.debug("HkAnalyzer configuration file not found!");
     }
   }
 

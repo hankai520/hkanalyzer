@@ -208,27 +208,27 @@ public class HkQueryBuilder {
     private static final int HAND_OVER = 1; // 标记目标词元首字符索引位置超出了右边界，应该将当前决策权交由下一个树节点（博弈失败）。
 
     private int rightBorder; // 当前节点的右边界（边界由当前节点所接受的词元进行拓展，接受后，右边界被拓展为词元末字符的位置索引）
-    private Lexeme lexeme; // 当前节点主词元
+    private Lexeme word; // 当前节点主词元
     private final List<QueryBranch> childBranches = new ArrayList<>(1); // 与当前节点主词元有关的歧义词元。
     private QueryBranch nextBranch; // 下一个决策节点（相当于博弈中的选手）。
 
-    QueryBranch(Lexeme lexeme) {
-      if (lexeme != null) {
-        this.lexeme = lexeme;
-        rightBorder = lexeme.getEndPosition();// 正向分词，不考虑左边界
+    QueryBranch(Lexeme word) {
+      if (word != null) {
+        this.word = word;
+        rightBorder = word.getEndPosition();// 正向分词，不考虑左边界
       }
     }
 
-    public Lexeme getLexeme() {
-      return lexeme;
+    public Lexeme getWord() {
+      return word;
     }
 
     @Override
     public int hashCode() {
-      if (lexeme == null) {
+      if (word == null) {
         return 0;
       } else {
-        return lexeme.hashCode() * 37;
+        return word.hashCode() * 37;
       }
     }
 
@@ -239,8 +239,8 @@ public class HkQueryBuilder {
       }
       if ((o != null) && (o instanceof QueryBranch)) {
         final QueryBranch other = (QueryBranch) o;
-        if ((lexeme != null) && (other.getLexeme() != null)) {
-          return lexeme.equals(other.getLexeme());
+        if ((word != null) && (other.getWord() != null)) {
+          return word.equals(other.getWord());
         }
       }
       return false;
@@ -256,8 +256,8 @@ public class HkQueryBuilder {
      */
     private List<Query> toQueries(String fieldName) {
       final List<Query> queries = new ArrayList<>(1);
-      if (lexeme != null) {
-        queries.add(new TermQuery(new Term(fieldName, lexeme.getText())));
+      if (word != null) {
+        queries.add(new TermQuery(new Term(fieldName, word.getText())));
       }
       if ((childBranches.size() > 0)) {
         if (childBranches.size() == 1) {
@@ -299,11 +299,15 @@ public class HkQueryBuilder {
         if (childBranches.isEmpty()) {
           childBranches.add(new QueryBranch(lexeme));
         } else {
+          boolean isAdoptedByChild = false;
           for (final QueryBranch childBranch : childBranches) {
             if (childBranch.adopt(lexeme)) {
-              childBranches.add(new QueryBranch(lexeme));
+              isAdoptedByChild = true;
               break;
             }
+          }
+          if (!isAdoptedByChild) {
+            childBranches.add(new QueryBranch(lexeme));
           }
         }
         if (lexeme.getEndPosition() > rightBorder) {
@@ -331,7 +335,7 @@ public class HkQueryBuilder {
     private int checkAdoptability(Lexeme lexeme) {
       Objects.requireNonNull(lexeme, "Lexeme cannot be null!");
       int acceptType = 0;
-      if (null == this.lexeme) { // 如果当前节点是一个根节点
+      if (null == word) { // 如果当前节点是一个根节点
         if ((rightBorder > 0) && (lexeme.getBeginPosition() >= rightBorder)) {
           // 当前节点含有至少1个相关词，且目标词元位置在当前节点的边界外，则交由下一节点进行决策。
           acceptType = HAND_OVER;
@@ -340,7 +344,7 @@ public class HkQueryBuilder {
           acceptType = ADOPTED;
         }
       } else {
-        if ((lexeme.getBeginPosition() >= lexeme.getEndPosition())
+        if ((lexeme.getBeginPosition() >= word.getEndPosition())
             && (lexeme.getBeginPosition() < rightBorder)) {
           // 如果目标词元与当前节点主词元不相交，但位于当前节点边界内，则认为目标词元可能是一个关联词（歧义词）。
           acceptType = ADOPTED;

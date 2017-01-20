@@ -33,7 +33,7 @@ public class Demo {
   private static RAMDirectory directory = new RAMDirectory();
 
   public static void main(String[] args) throws Exception {
-    // demoTokenizeString();
+    demoTokenizeString();
     demoIndexAndSearch();
   }
 
@@ -59,9 +59,10 @@ public class Demo {
     // final Query query = new TermsQuery(new Term("text", keyword));
     final TopDocs topDocs = searcher.search(query, 5);
     final ScoreDoc[] docs = topDocs.scoreDocs;
+    System.out.println("\n\n搜索到内容:");
     for (final ScoreDoc sd : docs) {
       final Document doc = searcher.doc(sd.doc);
-      System.out.println("搜索到内容：" + doc.get("text"));
+      System.out.println(doc.get("text"));
     }
   }
 
@@ -80,6 +81,7 @@ public class Demo {
     final StringReader sr = new StringReader(text);
     tokenizer.setReader(sr);
     tokenizer.reset();
+    System.out.println("\n\n分词结果:");
     while (tokenizer.incrementToken()) {
       System.out.println(tokenizer.getStringComponent());
     }

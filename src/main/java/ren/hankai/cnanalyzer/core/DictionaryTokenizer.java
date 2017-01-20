@@ -32,7 +32,7 @@ public class DictionaryTokenizer extends Tokenizer {
   }
 
   @Override
-  public boolean incrementToken() throws IOException {
+  public final boolean incrementToken() throws IOException {
     clearAttributes();
     final Lexeme lexeme = segmentator.next();
     if (lexeme != null) {
