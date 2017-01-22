@@ -6,6 +6,8 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 自定义的 Lucene 分词组件。
@@ -20,6 +22,7 @@ public class DictionaryTokenizer extends Tokenizer {
   private final OffsetAttribute offsetAttribute;
   private int endOffset;
   private final Segmentator segmentator;
+  private final List<String> words = new ArrayList<>(); // 缓存分词结果
 
   public DictionaryTokenizer() {
     this(false);
@@ -40,6 +43,7 @@ public class DictionaryTokenizer extends Tokenizer {
       termAttribute.setLength(lexeme.getLength());
       offsetAttribute.setOffset(lexeme.getBeginPosition(), lexeme.getEndPosition());
       endOffset = lexeme.getEndPosition();
+      words.add(termAttribute.toString());
       return true;
     }
     return false;
@@ -75,4 +79,14 @@ public class DictionaryTokenizer extends Tokenizer {
   public int getEndOffset() {
     return endOffset;
   }
+
+  /**
+   * 获取 words 字段的值。
+   *
+   * @return words 字段值
+   */
+  public List<String> getWords() {
+    return new ArrayList<>(words);
+  }
+
 }

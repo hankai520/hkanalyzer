@@ -45,6 +45,7 @@ public class Demo {
     doc.add(new TextField("id", "123", Store.YES));
     doc.add(new TextField("text", text, Store.YES));
     indexWriter.addDocument(doc);
+    // System.out.println(analyzer.getWords());
     indexWriter.flush();
     indexWriter.close();
   }

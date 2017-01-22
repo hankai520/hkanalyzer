@@ -5,6 +5,8 @@ import org.apache.lucene.analysis.Analyzer;
 
 import ren.hankai.cnanalyzer.core.DictionaryTokenizer;
 
+import java.util.List;
+
 /**
  * 自定义 Lucene 分析器组件。
  *
@@ -27,6 +29,17 @@ public class HkAnalyzer extends Analyzer {
   @Override
   protected TokenStreamComponents createComponents(String fieldName) {
     return new TokenStreamComponents(tokenizer);
+  }
+
+  /**
+   * 获取分词结果（在用lucene搜索完毕后，可以直接获取分词结果，避免再次分词）。
+   * 
+   * @return 分词结果
+   * @author hankai
+   * @since Jan 22, 2017 6:12:09 PM
+   */
+  public List<String> getWords() {
+    return tokenizer.getWords();
   }
 
 }
