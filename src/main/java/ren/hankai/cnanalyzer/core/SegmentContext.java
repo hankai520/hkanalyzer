@@ -33,7 +33,7 @@ public class SegmentContext {
   // 词元结果集，存储每次游标的移动，切分出来的词元
   private SortedLinkSet lexemeLinkSet;
 
-  public SegmentContext(char[] buffer, boolean matchLongerTextOnly) {
+  public SegmentContext(final char[] buffer, final boolean matchLongerTextOnly) {
     this.matchLongerTextOnly = matchLongerTextOnly;
     this.buffer = buffer;
     activeProcessors = new HashSet<>(4);
@@ -93,7 +93,7 @@ public class SegmentContext {
    * @author hankai
    * @since Jan 17, 2017 10:53:44 AM
    */
-  public void lockBuffer(WordProcessor processor) {
+  public void lockBuffer(final WordProcessor processor) {
     activeProcessors.add(processor);
   }
 
@@ -104,7 +104,7 @@ public class SegmentContext {
    * @author hankai
    * @since Jan 17, 2017 11:02:43 AM
    */
-  public void unlockBuffer(WordProcessor processor) {
+  public void unlockBuffer(final WordProcessor processor) {
     activeProcessors.remove(processor);
   }
 
@@ -169,11 +169,11 @@ public class SegmentContext {
   /**
    * 添加词元到分词集合。
    *
-   * @param lexeme
+   * @param lexeme 词元
    * @author hankai
    * @since Jan 17, 2017 11:04:14 AM
    */
-  public void addLexeme(Lexeme lexeme) {
+  public void addLexeme(final Lexeme lexeme) {
     if (!Dictionary.isStopWord(buffer, lexeme.getBegin(), lexeme.getLength())) {
       lexemeLinkSet.add(lexeme);
     }
@@ -223,7 +223,7 @@ public class SegmentContext {
    *
    * @param bufferOffset bufferOffset 字段的值
    */
-  public void setBufferOffset(int bufferOffset) {
+  public void setBufferOffset(final int bufferOffset) {
     this.bufferOffset = bufferOffset;
   }
 
@@ -241,7 +241,7 @@ public class SegmentContext {
    *
    * @param availableLength availableLength 字段的值
    */
-  public void setAvailableLength(int availableLength) {
+  public void setAvailableLength(final int availableLength) {
     this.availableLength = availableLength;
   }
 
@@ -259,7 +259,7 @@ public class SegmentContext {
    *
    * @param lastAnalyzedLength lastAnalyzedLength 字段的值
    */
-  public void setLastAnalyzedLength(int lastAnalyzedLength) {
+  public void setLastAnalyzedLength(final int lastAnalyzedLength) {
     this.lastAnalyzedLength = lastAnalyzedLength;
   }
 
@@ -277,11 +277,9 @@ public class SegmentContext {
    *
    * @param bufferCursor bufferCursor 字段的值
    */
-  public void setBufferCursor(int bufferCursor) {
+  public void setBufferCursor(final int bufferCursor) {
     this.bufferCursor = bufferCursor;
   }
-
-
 
   /**
    * 词元有序链表（不提供随机访问）。
@@ -291,6 +289,7 @@ public class SegmentContext {
    * @since Jan 17, 2017 9:13:34 AM
    */
   private class SortedLinkSet {
+
     private Lexeme head = null;
     private Lexeme tail = null;
     private int size = 0;
@@ -302,7 +301,7 @@ public class SegmentContext {
      * @author hankai
      * @since Jan 17, 2017 9:55:39 AM
      */
-    private void add(Lexeme lexeme) {
+    private void add(final Lexeme lexeme) {
       if (size == 0) {
         head = tail = lexeme;
         size++;

@@ -143,7 +143,6 @@ public class LetterProcessor implements WordProcessor {
     }
   }
 
-
   private boolean isLetterConnector(char input) {
     final int index = Arrays.binarySearch(LETTER_CONNECTORS, input);
     return index >= 0;

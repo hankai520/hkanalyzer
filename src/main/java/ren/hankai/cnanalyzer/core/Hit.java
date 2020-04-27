@@ -1,6 +1,5 @@
 package ren.hankai.cnanalyzer.core;
 
-
 /**
  * 分词命中信息。
  *
@@ -9,6 +8,7 @@ package ren.hankai.cnanalyzer.core;
  * @since Jan 18, 2017 5:29:18 PM
  */
 public class Hit {
+
   private static final int UNMATCH = 0x00000000; // 不匹配
   private static final int MATCH = 0x00000001; // 匹配
   private static final int PREFIX = 0x00000010; // 前缀匹配

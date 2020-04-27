@@ -4,7 +4,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import ren.hankai.cnanalyzer.util.ConfigUtil;
 
 import java.io.BufferedReader;
@@ -15,7 +14,7 @@ import java.util.Objects;
 
 /**
  * 词库。
- * 
+ *
  * @author hankai
  * @version 1.0.0
  * @since Jan 20, 2017 2:18:13 PM
@@ -60,7 +59,7 @@ public class Dictionary {
    * @author hankai
    * @since Jan 18, 2017 4:43:25 PM
    */
-  public static WordSegment loadWords(String dictionaryPath, WordSegment wordSegment) {
+  public static WordSegment loadWords(final String dictionaryPath, final WordSegment wordSegment) {
     WordSegment ws = wordSegment;
     if (ws == null) {
       ws = new WordSegment((char) 0);
@@ -97,24 +96,24 @@ public class Dictionary {
   /**
    * 检索匹配主词典
    *
-   * @param charArray
-   * @param begin
-   * @param length
+   * @param charArray 字符序列
+   * @param begin 要匹配的字符在序列中的位置
+   * @param length 要匹配的字符个数
    * @return Hit 匹配结果描述
    */
-  public static Hit matchInMainDict(char[] charArray, int begin, int length) {
+  public static Hit matchInMainDict(final char[] charArray, final int begin, final int length) {
     return mainWords.match(charArray, begin, length);
   }
 
   /**
    * 检索匹配主词典, 从已匹配的Hit中直接取出DictSegment，继续向下匹配
    *
-   * @param charArray
-   * @param currentIndex
-   * @param matchedHit
-   * @return Hit
+   * @param charArray 字符序列
+   * @param currentIndex 要匹配的字符在序列中的位置
+   * @param matchedHit 用于在递归搜索时，保存命中信息
+   * @return Hit 命中信息
    */
-  public static Hit matchWithHit(char[] charArray, int currentIndex, Hit matchedHit) {
+  public static Hit matchWithHit(final char[] charArray, final int currentIndex, final Hit matchedHit) {
     Objects.requireNonNull(matchedHit, "Matched hit cannot be null!");
     final WordSegment ds = matchedHit.getMatchedWord();
     return ds.match(charArray, currentIndex, matchedHit);
@@ -123,24 +122,24 @@ public class Dictionary {
   /**
    * 检索匹配量词词典
    *
-   * @param charArray
-   * @param begin
-   * @param length
+   * @param charArray 字符序列
+   * @param begin 要匹配的字符在序列中的位置
+   * @param length 要匹配的字符个数
    * @return Hit 匹配结果描述
    */
-  public static Hit matchInQuantifierDict(char[] charArray, int begin, int length) {
+  public static Hit matchInQuantifierDict(final char[] charArray, final int begin, final int length) {
     return quantifiers.match(charArray, begin, length);
   }
 
   /**
    * 判断是否是停止词
    *
-   * @param charArray
-   * @param begin
-   * @param length
-   * @return boolean
+   * @param charArray 字符序列
+   * @param begin 要匹配的字符在序列中的位置
+   * @param length 要匹配的字符个数
+   * @return boolean 是否是需要停止匹配的词
    */
-  public static boolean isStopWord(char[] charArray, int begin, int length) {
+  public static boolean isStopWord(final char[] charArray, final int begin, final int length) {
     return stopWords.match(charArray, begin, length, null).isMatch();
   }
 
@@ -151,7 +150,7 @@ public class Dictionary {
    * @author hankai
    * @since Jan 19, 2017 9:40:37 AM
    */
-  public static void addWord(String... words) {
+  public static void addWord(final String... words) {
     if (ArrayUtils.isNotEmpty(words)) {
       for (final String word : words) {
         addWord(word);
@@ -166,7 +165,7 @@ public class Dictionary {
    * @author hankai
    * @since Jan 19, 2017 9:41:00 AM
    */
-  public static void addWord(String word) {
+  public static void addWord(final String word) {
     if ((mainWords != null) && StringUtils.isNotEmpty(word)) {
       mainWords.fillSegment(word.toCharArray());
     }

@@ -12,6 +12,7 @@ import java.util.Objects;
  * @since Jan 18, 2017 9:47:31 AM
  */
 public class WordSegment {
+
   // 存储当前节点的单个字符
   private final Character character;
   // 存储当前节点之后可能与当前节点匹配成词的子节点
@@ -19,7 +20,7 @@ public class WordSegment {
   // 标记从根节点到当前节点的字符序列是否是一个完整的词
   private boolean isCompleteWord = false;
 
-  public WordSegment(Character nodeChar) {
+  public WordSegment(final Character nodeChar) {
     Objects.requireNonNull(nodeChar, "Node character must not be null!");
     character = nodeChar;
   }
@@ -56,7 +57,7 @@ public class WordSegment {
    * @author hankai
    * @since Jan 18, 2017 9:34:38 AM
    */
-  public Hit match(char[] charArray, int begin, int length) {
+  public Hit match(final char[] charArray, final int begin, final int length) {
     return match(charArray, begin, length, null);
   }
 
@@ -70,7 +71,7 @@ public class WordSegment {
    * @author hankai
    * @since Jan 18, 2017 9:26:24 AM
    */
-  public Hit match(char[] charArray, int begin, Hit searchHit) {
+  public Hit match(final char[] charArray, final int begin, final Hit searchHit) {
     return match(charArray, begin, -1, searchHit);
   }
 
@@ -79,13 +80,13 @@ public class WordSegment {
    *
    * @param charArray 字符序列
    * @param begin 要匹配的字符在序列中的位置
-   * @param length 要匹配的字符的长度（>1:整词匹配，=1:单字匹配）
+   * @param length 要匹配的字符的长度（大于1:整词匹配，等于1:单字匹配）
    * @param searchHit 用于在递归搜索时，保存命中信息
    * @return 命中信息
    * @author hankai
    * @since Jan 18, 2017 9:22:01 AM
    */
-  public Hit match(char[] charArray, int begin, int length, Hit searchHit) {
+  public Hit match(final char[] charArray, final int begin, final int length, Hit searchHit) {
     if (searchHit == null) {
       searchHit = new Hit();
       searchHit.setBegin(begin);
@@ -122,7 +123,7 @@ public class WordSegment {
    * @author hankai
    * @since Jan 17, 2017 4:21:48 PM
    */
-  public void fillSegment(char[] charArray) {
+  public void fillSegment(final char[] charArray) {
     this.fillSegment(charArray, 0, charArray.length);
   }
 
@@ -130,12 +131,12 @@ public class WordSegment {
    * 将词填充到词典树（将词按单字转换为树种的一条路径）。
    *
    * @param charArray 词对应的字符序列
-   * @param begin 从字符序列的第几个字符开始填充（值 >= 0）
+   * @param begin 从字符序列的第几个字符开始填充（值大于等于0）
    * @param length 要填充几个字符
    * @author hankai
    * @since Jan 18, 2017 10:03:07 AM
    */
-  public synchronized void fillSegment(char[] charArray, int begin, int length) {
+  public synchronized void fillSegment(final char[] charArray, final int begin, final int length) {
     final Character beginChar = new Character(charArray[begin]);
     final WordSegment ds = findSegment(beginChar);
     if (length > 1) {
@@ -151,7 +152,7 @@ public class WordSegment {
    * @param keyChar
    * @return
    */
-  private WordSegment findSegment(Character keyChar) {
+  private WordSegment findSegment(final Character keyChar) {
     final Map<Character, WordSegment> segmentMap = children;
     WordSegment ds = segmentMap.get(keyChar);
     if (ds == null) {
