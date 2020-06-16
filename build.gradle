@@ -1,17 +1,44 @@
-ext {
-    mainVersion = "0.0.1.RELEASE"
-}
-
-apply plugin: "eclipse"
-apply plugin: "eclipse-wtp"
-apply plugin: "java"
-apply plugin: "maven"
-
 buildscript {
     repositories {
         maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
     }
+    dependencies {
+    	classpath "com.bmuschko:gradle-nexus-plugin:2.3.1"
+    }
 }
+
+plugins {
+	id "io.codearte.nexus-staging" version "0.11.0"
+}
+
+nexusStaging {
+    packageGroup = "ren.hankai"
+}
+
+ext {
+    mainVersion = "0.0.1.RELEASE"
+    
+    linkHomepage = "https://github.com/hankai520/hkanalyzer"
+    linkScmUrl = "https://github.com/hankai520/hkanalyzer"
+	linkScmConnection = "https://github.com/hankai520/hkanalyzer.git"
+	linkScmDevConnection = "https://github.com/hankai520/hkanalyzer.git"
+	
+	developerId = "hankai945"
+	developerName = "Kai Han"
+	developerEmail = "john.han.kai@gmail.com"
+	
+	licenseName = "The MIT License (MIT)"
+	licenseUrl = "https://github.com/hankai520/hkanalyzer/blob/master/LICENSE"
+	licenseDistribution = "repo"
+	
+	sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+	sonatypeSnapshotRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+}
+
+apply plugin: "eclipse"
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "eclipse-wtp"
 
 repositories {
     maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
@@ -63,35 +90,52 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
+javadoc {
+	options.addStringOption('encoding', 'UTF-8')
+}
 
-configure(install.repositories.mavenInstaller) {
-    pom.project {
-        groupId 'ren.hankai'
-        artifactId 'hkanalyzer'
-        version = mainVersion
-        inceptionYear '2019'
-        packaging 'jar'
+/* 上传到 sonatype nexus */
+apply plugin: "com.bmuschko.nexus"
+
+group = "ren.hankai"
+archivesBaseName = jar.baseName
+version = mainVersion
+
+modifyPom {
+    project {
+        name "HkAnalyzer"
+        description "HkAnalyzer"
+        url = linkHomepage
+        scm {
+            url = linkScmUrl
+            connection = linkScmConnection
+            developerConnection = linkScmDevConnection
+        }
         licenses {
             license {
-                name 'IKA refinement'
-                //url ''
-                distribution 'repo'
+                name = licenseName
+                url = licenseUrl
+                distribution = licenseDistribution
+            }
+        }
+        developers {
+            developer {
+                id = developerId
+                name = developerName
+                email = developerEmail
             }
         }
     }
 }
 
-task sourcesJar(type: Jar, dependsOn:classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+extraArchive {
+    sources = true
+    tests = true
+    javadoc = true
 }
 
-task javadocJar(type: Jar, dependsOn:javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
+nexus {
+    sign = true
+    repositoryUrl = sonatypeRepositoryUrl
+    snapshotRepositoryUrl = sonatypeSnapshotRepositoryUrl
 }
