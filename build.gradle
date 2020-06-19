@@ -133,7 +133,18 @@ extraArchive {
     tests = true
     javadoc = true
 }
+/*
+~/.gradle/gradle.properties 中配置私密信息如下：
+nexusUsername=sonatype用户名
+nexusPassword=sonatype密码
 
+signing.keyId=gpg签名所用密钥ID（gpg -K，取"sec"信息中的ID后8位）
+signing.secretKeyRingFile=包含私钥的密钥串文件（gpg 2.1后，需要执行命令导出 gpg --keyring secring.gpg --export-secret-keys > ~/.gnupg/secring.gpg）
+signing.password=密钥密码（生成密钥时所指定的密码）
+
+macos密钥管理可以使用 GPG Keychain 应用
+
+*/
 nexus {
     sign = true
     repositoryUrl = sonatypeRepositoryUrl
